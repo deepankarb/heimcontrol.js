@@ -82,11 +82,16 @@ define([ 'pi-gpio' ], function(gpio) {
               gpio.read(parseInt(item.pin), function(err, value) {
                 if (!err) {
                   that.values[item._id] = value;
+//		  console.log(item.pin + " : " + value);
                   that.app.get('sockets').emit('gpio-input', {
                     id: item._id,
                     value: value
                   });
                 }
+
+		else {
+		  console.log(getDateTime() + ': Error while reading pin ' + item.pin + '! ' + err);
+		}
               });
             });
           });
@@ -94,6 +99,29 @@ define([ 'pi-gpio' ], function(gpio) {
       });
     }
   };
+
+function getDateTime() {
+    var date = new Date();
+
+    var hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;
+    
+    var min  = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;
+
+    var sec  = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;    
+    month = (month < 10 ? "0" : "") + month;
+
+    var day  = date.getDate();
+    day = (day < 10 ? "0" : "") + day;
+    
+    return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
+}
 
   /**
    * Manipulate the items array before render
