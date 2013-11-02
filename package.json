@@ -16,7 +16,7 @@
     "node-conf": ">= 0.0.4",
     "rasp2c": ">= 0.0.1",
     "cookie": ">= 0.0.5",
-    "pi-gpio": "deepankarb/pi-gpio",
+    "pi-gpio": "git://github.com/deepankarb/pi-gpio.git#e7fa1800548fd45acb86252a7f7017048800f9dc",
     "ping": ">= 0.1.1",
     "wake_on_lan": ">= 0.0.3",
     "delivery": ">= 0.0.3"
