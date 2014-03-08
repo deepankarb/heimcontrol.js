@@ -48,7 +48,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       var server = Http.createServer(app).listen(config.port, function() {
         console.log('\u001b[32mheimcontrol.js listening on port \u001b[33m%d\033[0m', config.port);
       });
-        
+
       if (config.secret == "CHANGE_ME") {
         console.log('\u001b[31mWARNING: Change secret string in config/' + node_env + '.json\033[0m');
       }
@@ -70,7 +70,18 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
               }
             });
           } else {
-            callback('Unauthorized', false);
+            var token = data.headers.authorization;
+            app.get('db').collection('User', function(err, u) {
+              u.find({
+                token: token
+              }).toArray(function(err, r) {
+                if (r.length === 0) {
+                  callback('Unauthorized', false);
+                } else {
+                  callback(null, true);
+                }
+              });
+            });
           }
         });
       });
@@ -80,7 +91,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         clientList.push(socket.id);
         socket.on('disconnect', function() {
           var i = clientList.indexOf(socket.id);
-          clientList.splice(i,1);
+          clientList.splice(i, 1);
         });
       });
 
@@ -114,37 +125,42 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.use(app.router);
       });
 
-			// Load theme
-	    app.get('db').collection('Settings', function(err, s) {
-	      s.find({
-	        'key': 'theme'
-	      }).toArray(function(err, result) {
-	      	if (err || result.length == 0 || result[0].value == 'default') {
-						app.locals.theme = '/css/bootstrap.min.css';
-	      	} else {
-	      		app.locals.theme = '/css/themes/' + result[0].value;
-	      	}
-	      });
-	    });
-				
+      // Load theme
+      app.get('db').collection('Settings', function(err, s) {
+        s.find({
+          'key': 'theme'
+        }).toArray(function(err, result) {
+          if (err || result.length == 0 || result[0].value == 'default') {
+            app.locals.theme = '/css/bootstrap.min.css';
+          } else {
+            app.locals.theme = '/css/themes/' + result[0].value;
+          }
+        });
+      });
+
       // Routes
       app.get('/register', Routes.showRegister);
       app.post('/register', Routes.doRegister);
 
       app.get('/login', Routes.showLogin);
       app.post('/login', Routes.doLogin);
+      app.post('/api/login', Routes.createAuthToken);
 
       app.get('/', Routes.isAuthorized, Routes.index);
 
       app.get('/settings', Routes.isAuthorized, Routes.settings);
       app.post('/settings/password', Routes.isAuthorized, Routes.changePassword);
+      app.post('/settings/user/create', Routes.isAuthorized, Routes.createUser);
+      app.get('/settings/user/delete/:email', Routes.isAuthorized, Routes.deleteUser);
       app.post('/settings/theme', Routes.isAuthorized, Routes.changeTheme);
 
+      app.all('/api/:plugin/:method?', Routes.isAuthorized, Routes.api, Routes.notFound);
+      
       app.get('/settings/:plugin', Routes.isAuthorized, Routes.settings, Routes.notFound);
       app.post('/settings/:plugin', Routes.isAuthorized, Routes.saveSettings, Routes.notFound);
 
       app.get('/logout', Routes.logout);
-
+      
       app.get('/js/plugins.js', Routes.pluginsJs);
       app.get('/css/plugins.css', Routes.pluginsCss);
 
