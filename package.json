@@ -19,7 +19,6 @@
     "pi-gpio": "git://github.com/deepankarb/pi-gpio.git#e7fa1800548fd45acb86252a7f7017048800f9dc",
     "ping": "= 0.1.7",
     "wake_on_lan": "= 0.0.3",
-    "delivery": "= 0.0.3",
-    "duino": "https://github.com/ni-c/duino/tarball/master"
+    "delivery": "= 0.0.3"
   }
 }

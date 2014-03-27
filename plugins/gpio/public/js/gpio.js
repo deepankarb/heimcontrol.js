@@ -27,6 +27,7 @@ require([ "jquery", "/socket.io/socket.io.js" ], function() {
    * GPIO output change
    */
   socket.on('gpio-output', function(data) {
+    console.log("****DEBUG****" + data.id + data.value);
     $('button[data-id="' + data.id + '"]').removeClass('active');
     $('button[data-id="' + data.id + '"][data-value="' + data.value + '"]').addClass('active');
   });

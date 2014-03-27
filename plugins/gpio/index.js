@@ -51,14 +51,23 @@ define([ 'pi-gpio' ], function(gpio) {
     var that = this;
     this.pluginHelper.findItem(this.collection, data.id, function(err, item, collection) {
       item.value = data.value + '';
+     
+      if (that.values[item._id] == item.value){
+    		console.log("****DEBUG**** Double toggle caught.");
+	     	return;
+      }
+
       gpio.open(parseInt(item.pin), "output", function(err) {
         gpio.write(parseInt(item.pin), parseInt(item.value), function() {
           gpio.close(parseInt(item.pin));
-          that.values[item._id] = item.value;
-          that.app.get('sockets').emit('gpio-output', {
+//	  if (that.values[item._id] != item.value) {
+//	    console.log("****DEBUG**** "+that.values[item._id]  + " -> " + item.value);
+	    that.values[item._id] = item.value;
+            that.app.get('sockets').emit('gpio-output', {
             id: item._id,
             value: item.value
           });
+//	  }
         });
       });
     });
