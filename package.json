@@ -1,31 +1,34 @@
 {
-  "name": "heimcontrol.js",
+  "name": "heimcontrol",
+  "descpription" : "Home automation in Node.js with Raspberry PI and Arduino",
+  "keywords": ["Home", "automation"],
+  "bugs": "https://github.com/ni-c/heimcontrol.js/issues",
   "version": "0.0.1",
+  "license": "SEE LICENSE IN LICENSE",
   "private": false,
   "repository": {
-    "type": "git",
-    "url": "git://github.com/ni-c/heimcontrol.js.git"
+		  "type": "git",
+		  "url": "https://github.com/deepankarb/heimcontrol.js"
   },
   "scripts": {
     "start": "node heimcontrol.js"
   },
   "dependencies": {
-    "express": "= 3.4.7",
-    "connect": "= 2.12.0",
-    "jade": "= 0.35.0",
-    "mongodb": "= 1.3.23",
-    "requirejs": "= 2.1.9",
-    "amdefine": "= 0.1.0",
-    "socket.io": "= 0.9.16",
-    "node-conf": "= 0.0.6",
-    "rasp2c": "= 0.0.1",
-    "cookie": "= 0.1.0",
-    "pi-gpio": "= 0.0.2",
-    "ping": "= 0.1.7",
-    "wake_on_lan": "= 0.0.3",
-    "delivery": "= 0.0.3",
-    "duino": "ni-c/duino#master",
-    "piswitch": "^1.0.3",
-    "ds18x20": "= 0.1.1"
+    "express": "=3.4.7",
+    "connect": "=2.12.0",
+    "jade": "=0.35.0",
+    "mongodb": "=1.3.23",
+    "requirejs": "=2.1.9",
+    "amdefine": "=0.1.0",
+    "socket.io": "=0.9.16",
+    "node-conf": "=0.0.6",
+    "rasp2c": "=0.0.1",
+    "cookie": "=0.1.0",
+    "pi-gpio": "=0.0.3",
+    "ping": "=0.1.7",
+    "wake_on_lan": "=0.0.3",
+    "delivery": "=0.0.3",
+    "piswitch": "1.2.3",
+	"duino": "ni-c/duino#master"
   }
 }
